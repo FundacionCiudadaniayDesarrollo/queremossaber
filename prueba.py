@@ -1,0 +1,2 @@
+import requests
+print requests.post( 'https://graph.facebook.com/10205442025760816/feed?link=https://queremossaber.ec/portal/solicitudes/archivo/solicitud/cuantas-solicitudes-de-revocatoria-del-mandato-se-ha-presentado-y-tramitado-ante-la-autoridad-electo/&access_token=CAAKZBvECZCGz0BAFlbxfvKb01U0obpBxeIevgsA6k8t8i2LVFeFjWFbQDJaZACE7v13cd394L71isg3BuqrkNmzuOTAuQ5pLddPehgkVcyXlJJNmYG94OyuD3wIeQQxYBEFpQJEj10ZB8FpEYd5Yk3QOnsIrzPThwnbG2uNZBDWmLzJpBeJSxENmwRQ12QVdcAHJdCpA2YQZDZD' )

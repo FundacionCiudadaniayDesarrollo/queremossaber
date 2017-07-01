@@ -1,0 +1,304 @@
+{% extends "frontend/template.html" %}
+
+{%block css%}
+	<link rel="stylesheet" href="{{STATIC_URL}}css/jquery.steps.css" />
+{%endblock%}
+
+{%block section%}
+<div class="container-fluid banner">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-3 top-10">
+				<div class="mensage-inicio table">
+					<div class="table-cell">
+						<h2>¡Ejerce tu derecho a acceder a información pública!</h2>
+						<span>Te facilitamos el proceso en pocos pasos.</span>
+					</div>
+				</div>
+			</div>		
+			<div id="cont-pregunta" class="col-xs-9 top-10">
+				<form id="form-pregunta" method="POST" accept-charset="utf-8" enctype="multipart/form-data" action="">
+					<div>
+						<h3>
+							<span>Paso 1</span><br>
+							<span>Formula tu pregunta</span>
+						</h3>
+						<article>
+							<div class="row">
+								<div class="col-xs-3">
+									<img class="img-responsive pull-left" src="{{STATIC_URL}}img/banner1.png">
+								</div>
+								<div class="col-xs-6">
+									<label for="id-pregunta"> Formula tu pregunta sobre la información que quisieras obtener (campo obligatorio)</label>
+									<textarea id="id-pregunta" name="pregunta" type="text" class="form-control pregunta-h" required></textarea>								
+
+									<label for="id-institucion"> ¿Sabes a qué institución debemos dirigir tu pregunta?</label>
+									<input id="id-institucion" name="institucion" type="text" class="form-control">
+								</div>
+								<div class="col-xs-3">
+									<img class="img-responsive pull-right" src="{{STATIC_URL}}img/uno.png" alt="">
+								</div>								
+							</div>
+						</article>
+
+						<h3>
+							<span>Paso 2</span><br>
+							<span>Datos de contacto</span>
+						</h3>
+						<article>
+							<div class="row">
+								<!--
+								<div class="col-xs-3 text-center">
+									<img class="img-responsive pull-left" src="{{STATIC_URL}}img/banner2.png">
+								</div>
+								-->
+								<div class="col-xs-9">
+									<div class="row">
+										<div class="col-xs-6">
+											<input id="id_contactos-redes-sociales" class="seguimiento-contactos oculto-input" type="radio" name="contactos" value="redes" required>
+											<label for="id_contactos-redes-sociales" class="select-dato select-dato-redes">
+												<span>Permitenos contactarte a través de:</span>
+											</label>
+
+											<input id="login-facebook" class="login-input" type="radio" name="login" value="facebook" disabled>
+											<label for="login-facebook" class="login-facebook button-social disabled-social"><i class="fa fa-facebook"></i> | Facebook</label>
+											
+											<input id="login-twitter" class="login-input" type="radio" name="login" value="twitter" disabled>
+											<label for="login-twitter" class="login-twitter button-social disabled-social"><i class="fa fa-twitter"></i> | Twitter</label>
+
+										</div>
+										<div class="col-xs-6">
+											<input id="id_contactos-email" class="seguimiento-contactos oculto-input" type="radio" name="contactos" value="email" required>
+											<label for="id_contactos-email" class="select-dato select-dato-email">
+												<span>O proporciónanos tu nombre y dirección de correo electrónico.</span>
+											</label>
+
+											<input id="id_nombre" name="nombre" type="text" class="form-control" placeholder="Nombre..." disabled>
+											<input id="id_email" name="email" type="text" class="form-control margin-top" placeholder="Email..." disabled>
+										</div>
+									</div>
+									<!--
+									<h3>Seguimiento:</h3>
+									
+									<input id="login-facebook" class="login-input" type="radio" name="login" value="facebook" required>
+									<label for="login-facebook" class="login-facebook button-social"><i class="fa fa-facebook"></i> | Facebook</label>
+									
+									<input id="login-twitter" class="login-input" type="radio" name="login" value="twitter" required>
+									<label for="login-twitter" class="login-twitter button-social"><i class="fa fa-twitter"></i> | Twitter</label>
+								
+									<input id="login-email" class="login-input" type="radio" name="login" value="email" required>
+									<label for="login-email" class="login-email button-social"><i class="fa fa-envelope"></i> | Email</label>
+
+									<div class="text-center">Se guardará absoluta confidencialidad de los datos. <br/><br/></div>
+									-->
+								</div>
+
+								<div class="col-xs-3">
+									<img class="img-responsive pull-right" src="{{STATIC_URL}}img/dos.png" alt="">
+								</div>								
+							</div>						
+						</article>
+
+						<h3>
+							<span>Paso 3</span><br>
+							<span>Revisa tu pregunta</span>
+						</h3>
+						<article>
+							<div class="row">
+								<div class="col-xs-3">
+									<img class="img-responsive pull-left" src="{{STATIC_URL}}img/banner1.png">
+								</div>
+								<div class="col-xs-6 contenido-step">
+									<h2>Formula una pregunta para cualquier entidad pública, sobre un tema de tú interés.</h2>
+								</div>
+								<div class="col-xs-3">
+									<img class="img-responsive pull-right" src="{{STATIC_URL}}img/tres.png" alt="">
+								</div>								
+							</div>
+						</article>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<div class="container">
+		<div class="row">
+			<div class="container">
+				<div class="col-xs-9">
+					<h3>Preguntas destacadas</h3>
+				</div>
+				<div class="col-xs-3">
+					<h3>Busca aquí</h3>
+				</div>
+
+				<div class="col-xs-9">
+					{% for destacada in destacadas %}
+						<div class="col-xs-4 destacadas_detalle">
+							<h4>{{destacada.pregunta|truncatechars:38}}</h4>
+							<h1>{{destacada.number_seguidores}}</h1>
+							<p>personas siguiendo</p>
+							<a href="{% url 'solicitudes-detalle' destacada.slug %}" class="btn btn-primary">Leer más</a>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="col-xs-3">
+					<div class="destacadas_detalle">
+						<h4>Buscar en archivo de preguntas</h4>
+						<h5>Ingresa lo que deseas buscar</h5>
+						<input id="id_buscar" type="text" class="form-control" placeholder="buscar...">
+						<br/>
+						<button id="id_boton_buscar" type="button" class="btn btn-primary">Buscar</button>
+					</div>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="col-xs-12">
+					<h3>Archivo</h3>
+					
+					{% for categoria in categorias %}
+						<a href="{%url 'solicitudes-listado-categoria' categoria.slug %}" class="categoria" style="background-color: {{categoria.color}};">
+							{{categoria}}
+						</a>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{%endblock%}
+
+{%block js%}
+	<script src="{{STATIC_URL}}js/jquery.steps.min.js"></script>
+	<script src="{{STATIC_URL}}js/jquery.validate.min.js"></script>
+	<script src="{{STATIC_URL}}js/messages_es.min.js"></script>
+	<script src="{{STATIC_URL}}js/methods_es_CL.min.js"></script>
+
+	<script>
+		var form = $("#form-pregunta");
+
+		form.validate({
+			errorPlacement: function errorPlacement(error, element) { element.before(error); },
+			rules: {
+				email: {
+					required: true,
+					email: true
+				}
+			}			
+		});
+
+		$(document).on('change', 'input[name="contactos"]', function(){
+			var val = $(this).val();
+			if(val=='redes'){
+				$('.button-social').removeClass('disabled-social');
+				$('.login-input').attr('required', 'required');
+				$('.login-input').removeAttr('disabled');
+
+				$('#id_nombre').removeAttr('required');
+				$('#id_email').removeAttr('required');
+				$('#id_nombre').attr('disabled', 'disabled');
+				$('#id_email').attr('disabled', 'disabled');
+
+			}else{
+				$('#id_nombre').removeAttr('disabled');
+				$('#id_email').removeAttr('disabled');
+				$('#id_nombre').attr('required', 'required');
+				$('#id_email').attr('required', 'required');
+
+				$('.button-social').addClass('disabled-social');
+				$('.login-input').removeAttr('required');
+				$('.login-input').attr('disabled', 'disabled');
+			};
+		});
+
+		form.children("div").steps({
+			headerTag: "h3",
+			bodyTag: "article",
+			transitionEffect: "slideLeft",
+			labels: {
+				next: "Siguiente",
+				previous: "Anterior",
+				cancel: "Cancelar",
+				finish: "Enviar Pregunta"
+			},
+
+			onStepChanging: function (event, currentIndex, newIndex)
+			{
+				form.validate().settings.ignore = ":disabled,:hidden";
+				return form.valid();
+			},
+			onStepChanged: function (event, currentIndex, priorIndex){
+				if(currentIndex==2){
+
+					var contacto = '';
+					if( $('#id_contactos-redes-sociales').prop('checked') ) {
+						contacto = $( 'input[name=login]:checked' ).val();
+					} else {
+						contacto = 'Correo Electrónico';
+					};
+
+					$( '#steps-uid-0-p-2 .contenido-step' ).empty();
+					$( '#steps-uid-0-p-2 .contenido-step' ).append(''
+						+'<p class="p-form"><strong>Pregunta:</strong></p>'
+						+'<p class="p-form"><textarea class="form-control" disabled>'+ $('#id-pregunta').val() +'</textarea></p>'
+						+'<p class="p-form"><strong>¿Sabes a qué institución debemos dirigir tu pregunta?::</strong></p>'
+						+'<p class="p-form"><input type="text" class="form-control" value="'+ $('#id-institucion').val() +'" disabled /></p>'
+						+'<p class="p-form"><strong>Contacto:</strong> '+ contacto +'</p>'
+					);
+				};
+			},
+			onFinishing: function (event, currentIndex)
+			{
+				form.validate().settings.ignore = ":disabled";
+				return form.valid();
+			},
+			onFinished: function (event, currentIndex)
+			{
+				$.ajax({
+					type: "POST",
+					url: "{%url 'solicitudes-pregunta-temporal-nuevo'%}",
+					data : {csrfmiddlewaretoken:"{{csrf_token}}", pregunta: $("#id-pregunta").val(), institucion: $("#id-institucion").val()},
+					success: function(response) {
+
+						if(response.token){
+							var contacto = $( '.seguimiento-contactos:checked' ).val(); 
+							var login = $( '.login-input:checked' ).val();
+
+							if(contacto=='redes'){
+								if( login=='facebook' ){
+									window.location.href = '{% url "social:begin" "facebook" %}?next=/portal/solicitudes/pregunta/temporal/procesar/' + response.token + '/';
+								};
+
+								if( login=='twitter' ){
+									window.location.href = '{% url "social:begin" "twitter" %}?next=/portal/solicitudes/pregunta/temporal/procesar/' + response.token + '/';
+								};
+							};
+
+							if(contacto=='email'){
+								
+								console.log( contacto);
+
+								$.ajax({
+									type: 'POST',
+									url: '/portal/solicitudes/archivo/loguear/' + response.token + '/',
+									data: {nombre: $('#id_nombre').val(), email: $('#id_email').val(), csrfmiddlewaretoken:'{{csrf_token}}'},
+									success: function(response){
+										if(response.token){
+											window.location.href = '/portal/solicitudes/pregunta/temporal/procesar/' + response.token + '/';
+										};
+									},
+								});
+							};							
+						};
+					}
+				});
+			}			
+		});
+
+		{% if resultado %}
+			$("#cont-pregunta").empty();
+			$("#cont-pregunta").append('<div class="mensage-inicio table" style="background:#fff; color:#000;"><div class="table-cell"><h3>Tu pregunta se ha recibido con éxito.</h3></div></div>');
+		{% endif %}
+	</script>
+{%endblock%}

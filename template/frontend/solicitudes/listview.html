@@ -1,0 +1,173 @@
+{% extends "frontend/template.html" %}
+
+{%block section%}
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-9">
+				<h3>Archivo de Preguntas</h3>
+				<label for="id_buscar">Buscar pregunta</label>
+				<input id="id_buscar" type="text" class="form-control" value="{{buscar}}">
+				
+				<div class="cont-solicitudes">
+					{% for solicitud in solicitud_list %}
+						<div class="solicitud sinpadding">
+							<div class="solicitud-table table">
+								<div class="col-xs-9 col-height">
+									<div class="solicitud-pregunta text-justify">
+										{{solicitud.pregunta}}
+									</div>
+								</div>
+								<div class="col-xs-3 col-height cont-backgroud">
+									<div class="text-center cont-botones">
+										<h5>Yo también deseo saber</h5>
+
+										<div class="text-center">
+											<a href="{% url "social:begin" "facebook" %}?next={% url 'solicitudes-detalle-token' solicitud.slug solicitud.token %}" class="login-facebook">
+												<i class="fa fa-facebook"></i>
+											</a>
+											<a href="{% url "social:begin" "twitter" %}?next={% url 'solicitudes-detalle-token' solicitud.slug solicitud.token %}" class="login-twitter">
+												<i class="fa fa-twitter"></i>
+											</a>
+											<a href="#" class="login-email" data-slug="{{solicitud.slug}}">
+												<i class="fa fa-envelope"></i>
+											</a>
+										</div>
+									</div>
+								</div>								
+							</div>
+							<div class="col-xs-9">
+								<table class="list_table">
+									<tbody>
+										<tr>
+											<th>
+												<span class="list_title">Enviada</span>
+											</th>
+											<td class="text-right">{{solicitud.fecha|date:"d/m/Y"}}</td>
+
+											<th>
+												<span class="list_title">Seguidores</span>
+											</th>
+											<td class="text-right">{{solicitud.seguidores.count}}</td>
+
+											{% if solicitud.categoria %}
+												<th>
+													<span class="list_title">Categoría</span>
+												</th>
+												<td class="text-right">
+													<a href="{%url 'solicitudes-listado-categoria' solicitud.categoria.slug %}" class="categoria_list" style="color: {{solicitud.categoria.color}};">
+														{{solicitud.categoria}}
+													</a>
+												</td>
+											{% else %}
+												<th>
+													<span class="list_title">Categoría</span>
+												</th>
+												<td class="text-right">
+													<a class="categoria_list">
+														Sin categoria
+													</a>
+												</td>
+											{% endif %}
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="col-xs-3">
+								<a href="{% url 'solicitudes-detalle' solicitud.slug %}" class="btn btn-primary button_detalle">Ver Detalle</a>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="col-xs-3">
+				<h3>Categorías</h3>
+
+				{% for categoria in categorias %}
+					<a href="{%url 'solicitudes-listado-categoria' categoria.slug %}" class="categoria_full" style="background-color: {{categoria.color}};">
+						{{categoria}}
+					</a>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+
+	<form id="loginForm" method="post" class="form-horizontal" style="display: none;" action="">
+		{% csrf_token %}
+	    <div class="form-group">
+	        <label class="col-xs-3 control-label">Nombre</label>
+	        <div class="col-xs-5">
+	            <input type="text" class="form-control" name="nombre" required>
+	        </div>
+	    </div>
+
+	    <div class="form-group">
+	        <label class="col-xs-3 control-label">Apellido</label>
+	        <div class="col-xs-5">
+	            <input type="text" class="form-control" name="apellido" required>
+	        </div>
+	    </div>
+
+	    <div class="form-group">
+	        <label class="col-xs-3 control-label">Email</label>
+	        <div class="col-xs-5">
+	            <input type="email" class="form-control" name="email" required>
+	        </div>
+	    </div>
+
+	    <div class="form-group">
+	        <div class="col-xs-5 col-xs-offset-3">
+	            <button type="submit" class="btn btn-primary">Seguir pregunta</button>
+	        </div>
+	    </div>
+	</form>		
+{%endblock%}
+
+{%block js%}	
+	<script src="{{STATIC_URL}}js/jquery.validate.min.js"></script>
+	<script src="{{STATIC_URL}}js/messages_es.min.js"></script>
+	<script src="{{STATIC_URL}}js/bootbox.min.js"></script>
+
+	<script>	
+		$(document).on('keypress', '#id_buscar', function(e){
+			var buscar = $(this).val();
+			var code = e.keyCode || e.which;
+
+			$( '#id_buscar' ).removeClass('errorInput');
+
+			if( code == 13 ) {
+				if( buscar ){					
+					window.location.href = "/portal/solicitudes/archivo/buscar/" + buscar  + "/";
+				}else{
+					$( '#id_buscar' ).addClass('errorInput');
+				};
+			};
+		});
+
+		$('#loginForm').validate();
+		$(document).on('click', '.login-email', function(e){
+			e.preventDefault();
+			
+			$('#loginForm').attr( 'action', '/portal/solicitudes/archivo/loguear/' + $( this ).data( 'slug' ) + '/' );
+
+	        bootbox
+	            .dialog({
+	                title: 'Seguir pregunta',
+	                message: $('#loginForm'),
+	                show: false // We will show it manually later
+	            })
+	            .on('shown.bs.modal', function() {
+	                $('#loginForm')
+	                    .show()      // Show the login form
+	                    .validate(); // Reset form
+	            })
+	            .on('hide.bs.modal', function(e) {
+	                // Bootbox will remove the modal (including the body which contains the login form)
+	                // after hiding the modal
+	                // Therefor, we need to backup the form
+	                $('#loginForm').hide().appendTo('body');
+	            })
+	            .modal('show');
+		});
+	</script>
+{%endblock%}

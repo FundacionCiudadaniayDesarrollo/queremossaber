@@ -1,0 +1,56 @@
+{% extends "frontend/template.html" %}
+
+{%block section%}
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-9">
+				<h3>Políticas y condiciones del servicio</h3>
+				
+				<p class="text-justify">
+					Te agradecemos por usar los servicios de Queremos Saber. El uso de nuestros servicios implica la aceptación de estas condiciones. Te recomendamos que las leas detenidamente.
+				</p>				
+				
+				<h3>Acerca de nuestra Iniciativa</h3>
+				<p class="text-justify">
+					<strong>Queremos Saber</strong> es una iniciativa que facilita a la ciudadanía el ejercicio de su derecho a acceder libremente a la información generada en entidades públicas o en las privadas que manejen fondos del Estado o realicen funciones públicas. El ciudadano solo debe formular y el equipo técnico de “Queremos Saber” elaborará una solicitud de acceso a información que será remitida a la institución respectiva y hará seguimiento de la misma. Una vez que se obtenga algún resultado o respuesta, se lo hará conocer al ciudadano o ciudadanos interesados en el tema a través del portal web y las redes sociales.				
+				</p>
+				
+				<h4>Criterios de aprobación y trámite de solicitudes</h4>	
+				
+				<p class="text-justify">
+					Las preguntas enviadas a través de nuestro sitio web serán analizadas por el equipo técnico de Queremos Saber acorde a lo que establece la Constitución de la República y la <a href="/portal/lotaip/">Ley Orgánica de Transparencia y Acceso a la Información (LOTAIP)</a>.				
+				</p>
+				
+				<ul>
+					<li>
+						<p>
+							<strong>Información pública:</strong> La Constitución y la LOTAIP establecen que se considera información pública, todo documento en cualquier formato, que se encuentre en poder de las instituciones públicas y de las personas jurídicas que manejen recursos del Estado. Por lo cual sólo podremos dar trámite a solicitudes que se encuentren bajo estos parámetros.
+						</p>
+					</li>
+					<li>
+						<p>
+							<strong>Información reservada:</strong> No se tomarán en cuenta las preguntas enviadas a nuestro sitio web que en su contenido configuren las excepciones y restricciones establecidas por la Constitución y la LOTAIP. Esta información se refiere a aquella que por razones de defensa nacional  está debidamente clasificada por el Consejo de Seguridad como reservada. Igualmente se entiende como reservada la información expresamente establecida en leyes vigentes.
+						</p>
+					</li>
+					<li>
+						<p>
+							<strong>Objetividad:</strong> El anhelo de Queremos Saber es facilitar a la mayor de cantidad posible de ciudadanos su pleno acceso a la información por lo cual pedimos que seas muy concreto al momento de formular tu pregunta. Mientras más específico seas en tu solicitud más fácil será acceder a la información.						
+						</p>
+					</li>										
+				</ul>
+				
+				<p class="text-justify">
+					El equipo de Queremos Saber no dará trámite a las preguntas que incumplan con los criterios de aprobación. A través de correo electrónico o redes sociales te informaremos motivadamente las causas por las cuales no podríamos dar trámite a tu solicitud. 
+				</p>
+				
+				<p class="text-justify">
+					Gracias por utilizar los servicios de Queremos Saber. 
+				</p>				
+			</div>
+			
+			<div class="col-xs-3">
+				{% include "frontend/derecha/index.html" %}
+			</div>
+		</div>
+	</div>
+{% endblock %}

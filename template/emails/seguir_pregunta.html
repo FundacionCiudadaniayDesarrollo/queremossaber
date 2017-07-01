@@ -1,0 +1,33 @@
+{% extends "emails/template.html" %}
+
+{%block compartir%}
+	<span style="display: inline-block; vertical-align: middle;">Compartir:</span>
+	
+	<a href="http://www.facebook.com/sharer.php?u={{domain }}{% url 'solicitudes-detalle' solicitud.slug %}" style="text-decoration: none;" target="_new">
+		<img style="display: inline-block; margin: 0 5px 0 5px; vertical-align: middle;" src="{{domain}}/static/img/facebook.png" alt="Facebook">
+	</a>
+	
+	<a href="http://twitter.com/share?url={{domain }}{% url 'solicitudes-detalle' solicitud.slug %}&text=He solicitado información vía @QueremosSaberEC. Revisa mi pregunta aquí:" style="text-decoration: none;" target="_new">
+		<img style="display: inline-block; margin: 0 5px 0 5px; vertical-align: middle;" src="{{domain}}/static/img/twitter.png" alt="Twitter">
+	</a>
+{%endblock%}
+
+{% block contenido %}
+	<p>
+		Hola {{nombre}},
+		<br>
+
+		Estás siguiendo la pregunta a través de Queremos Saber:
+	</p>
+
+	<p>
+		{{solicitud.pregunta}}
+	</p>
+
+	<p>
+		Nuestro equipo elaborará una solicitud de información que será remitida a la institución respectiva, y le dará seguimiento a la misma. Cuando obtengamos algún resultado o respuesta, te lo haremos conocer a través del correo electrónico, nuestro portal web y las redes sociales.
+	</p>
+
+	<p>Puedes contactarnos a través de info@queremossaber.ec</p>
+
+{% endblock %}

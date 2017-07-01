@@ -1,0 +1,213 @@
+{% extends "frontend/template.html" %}
+
+{%block meta%}
+	<!-- MetaFacebook -->
+	<meta property="og:site_name" content="Queremos Saber"/>
+	<meta property="og:image" content="{{image}}" />
+	<meta property="og:title" content="{{title}}" />
+	<meta property="og:url" content="{{url}}" />
+	<meta property="og:description" content="{{description}}" />
+	<meta property="og:type" content="article" />
+	<meta property="fb:app_id" content="772665702816573" />
+	<!-- FIN MetaFacebook -->
+
+	<!-- Twitter Cards -->
+	<meta property="twitter:account_id" content="2474328386" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@QueremosSaberEc" />
+	<meta name="twitter:title" content="{{title}}" />
+	<meta name="twitter:description" content="{{description}}" />
+	<meta name="twitter:creator" content="@QueremosSaberEc" />
+	<meta name="twitter:image:src" content="{{title}}" />
+	<meta name="twitter:domain" content="queremossaber.ec" />
+	<!-- FIN Twitter Cards -->
+{%endblock%}
+
+{%block section%}
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-9">
+				<h3>Detalle de Pregunta</h3>
+				
+				{% if seguimiento %}
+					<div class="seguir-pregunta">Gracias <strong>{{request.user.first_name}}</strong> estás siguiendo la pregunta.</div>
+				{% endif %}
+
+				<div class="cont-solicitudes">
+					<div class="solicitud sinpadding">
+						<div class="solicitud-table table">
+							<div class="col-xs-9 col-height">
+								<div class="solicitud-pregunta text-justify">
+									{{solicitud.pregunta}}
+								</div>
+							</div>
+							<div class="col-xs-3 col-height cont-backgroud">
+								<div class="text-center cont-botones">
+									<h5>Yo también deseo saber</h5>
+
+									<div class="text-center">
+										<a href="{% url "social:begin" "facebook" %}?next={% url 'solicitudes-detalle-token' solicitud.slug solicitud.token %}" class="login-facebook">
+											<i class="fa fa-facebook"></i>
+										</a>
+										<a href="{% url "social:begin" "twitter" %}?next={% url 'solicitudes-detalle-token' solicitud.slug solicitud.token %}" class="login-twitter">
+											<i class="fa fa-twitter"></i>
+										</a>
+										<a href="#" class="login-email">
+											<i class="fa fa-envelope"></i>
+										</a>
+									</div>
+								</div>
+							</div>								
+						</div>
+						<div class="col-xs-9">
+							<table class="list_table">
+								<tbody>
+									<tr>
+										<th>
+											<span class="list_title">Enviada</span>
+										</th>
+										<td class="text-right">{{solicitud.fecha|date:"d/m/Y"}}</td>
+
+										<th>
+											<span class="list_title">Seguidores</span>
+										</th>
+										<td class="text-right">{{solicitud.seguidores.count}}</td>
+
+										{% if solicitud.categoria %}
+											<th>
+												<span class="list_title">Categoría</span>
+											</th>
+											<td class="text-right">
+												<a href="{%url 'solicitudes-listado-categoria' solicitud.categoria.slug %}" class="categoria_list" style="color: {{solicitud.categoria.color}};">
+													{{solicitud.categoria}}
+												</a>
+											</td>
+										{% else %}
+											<th>
+												<span class="list_title">Categoría</span>
+											</th>
+											<td class="text-right">
+												<a class="categoria_list">
+													Sin categoria
+												</a>
+											</td>
+										{% endif %}
+
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div class="col-xs-3 cont-backgroud heightCell"></div>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-xs-12">
+						<h3>Seguimiento</h3>
+
+						<ul class="arcoden">
+							{% for seguimiento in solicitud.seguimiento_set.all %}
+								<li class="acordeon__item">
+									<div class="acordeon__item__click" style="background-color: {{seguimiento.estado.color}};">
+										{{seguimiento.estado}}
+										<div class="acordeon__item__click__icon">
+	                  						<i class="fa fa-angle-down"></i>
+	                					</div>
+									</div>
+									<div class="acordeon__item__info">								
+										<div class="acordeon__item__info__description">
+											{{seguimiento.comentario}}
+										</div>
+
+										{% if seguimiento.documento %}										
+											<iframe width="100%" height="600px" src="//docs.google.com/viewer?url=http://www.queremossaber.ec/{{seguimiento.documento.url}}&embedded=true" frameborder="0"></iframe>
+										{% endif %}
+									</div>
+								</li>
+							{% endfor %}
+						</ul>
+					</div>					
+				</div>
+			</div>
+			<div class="col-xs-3">
+				<h3>Categorías</h3>
+
+				{% for categoria in categorias %}
+					<a href="{%url 'solicitudes-listado-categoria' categoria.slug %}" class="categoria_full" style="background-color: {{categoria.color}};">
+						{{categoria}}
+					</a>
+				{% endfor %}
+			</div>			
+		</div>				
+	</div>
+
+	<form id="loginForm" method="post" class="form-horizontal" style="display: none;" action="{% url 'solicitudes-loguear-email' solicitud.slug %}">
+		{% csrf_token %}
+	    <div class="form-group">
+	        <label class="col-xs-3 control-label">Nombre</label>
+	        <div class="col-xs-5">
+	            <input type="text" class="form-control" name="nombre" required>
+	        </div>
+	    </div>
+
+	    <div class="form-group">
+	        <label class="col-xs-3 control-label">Apellido</label>
+	        <div class="col-xs-5">
+	            <input type="text" class="form-control" name="apellido" required>
+	        </div>
+	    </div>
+
+	    <div class="form-group">
+	        <label class="col-xs-3 control-label">Email</label>
+	        <div class="col-xs-5">
+	            <input type="email" class="form-control" name="email" required>
+	        </div>
+	    </div>
+
+	    <div class="form-group">
+	        <div class="col-xs-5 col-xs-offset-3">
+	            <button type="submit" class="btn btn-primary">Seguir pregunta</button>
+	        </div>
+	    </div>
+	</form>	
+{%endblock%}
+
+{%block js%}
+	<script src="{{STATIC_URL}}js/jquery.validate.min.js"></script>
+	<script src="{{STATIC_URL}}js/messages_es.min.js"></script>
+	<script src="{{STATIC_URL}}js/bootbox.min.js"></script>
+
+	<script>
+		$('#loginForm').validate();
+
+		$(document).on('click', '.login-email', function(e){
+			e.preventDefault();
+	        bootbox
+	            .dialog({
+	                title: 'Seguir pregunta',
+	                message: $('#loginForm'),
+	                show: false // We will show it manually later
+	            })
+	            .on('shown.bs.modal', function() {
+	                $('#loginForm')
+	                    .show()      // Show the login form
+	                    .validate(); // Reset form
+	            })
+	            .on('hide.bs.modal', function(e) {
+	                // Bootbox will remove the modal (including the body which contains the login form)
+	                // after hiding the modal
+	                // Therefor, we need to backup the form
+	                $('#loginForm').hide().appendTo('body');
+	            })
+	            .modal('show');
+		});
+
+		$('.acordeon__item__click').click(function(){
+			if(false == $(this).next().is(':visible')){
+				$('.acordeon__item__info').slideUp(300);
+			}
+			$(this).next().slideToggle(300);
+		});
+
+	</script>
+{%endblock%}
